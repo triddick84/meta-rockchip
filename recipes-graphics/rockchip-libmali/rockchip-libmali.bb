@@ -67,6 +67,12 @@ EXTRA_OEMESON = " \
 	-Dplatform=${MALI_PLATFORM} \
 "
 
+do_install_append () {
+	grep -q "\-DMESA_EGL_NO_X11_HEADERS" ${D}${libdir}/pkgconfig/egl.pc && \
+		sed -i 's/defined(MESA_EGL_NO_X11_HEADERS)/1/' \
+			${D}${includedir}/EGL/eglplatform.h
+}
+
 INSANE_SKIP_${PN} = "already-stripped ldflags dev-so textrel"
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
